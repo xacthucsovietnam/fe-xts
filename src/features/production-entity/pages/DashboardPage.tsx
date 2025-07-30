@@ -1,4 +1,5 @@
-// import { useState, useEffect } from 'react';
+// src/features/production-entity/pages/DashboardPage.tsx
+import React from 'react';
 import {
   Activity,
   HardDrive,
@@ -210,15 +211,19 @@ const DonutChart: React.FC = () => {
   );
 };
 
-function App() {
-  // isAnimated state và useEffect liên quan đã được loại bỏ vì không được sử dụng trực tiếp trong JSX
-  // và các hiệu ứng chuyển động đã được xử lý bằng CSS.
-
+/**
+ * ProductionEntityDashboardPage Component
+ *
+ * This component displays the dashboard for the "Chủ thể sản xuất" role.
+ * It includes various statistics cards, simple charts, and quick action buttons
+ * to provide an overview of the production entity's data.
+ */
+const ProductionEntityDashboardPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 p-6">
+      {/* Header section for the dashboard content */}
+      <div className="bg-white shadow-sm border-b border-gray-200 rounded-xl mb-6">
+        <div className="px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="bg-gradient-to-r from-blue-500 to-indigo-600 p-3 rounded-xl">
@@ -238,7 +243,7 @@ function App() {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-full mx-auto">
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           <StatsCard
@@ -309,4 +314,4 @@ function App() {
   );
 }
 
-export default App;
+export default ProductionEntityDashboardPage;
