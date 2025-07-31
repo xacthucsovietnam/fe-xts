@@ -101,8 +101,7 @@ const HomePage = () => {
     };
 
     return (
-        <body className="text-gray-800">
-            <div id="public-view">
+            <div id="public-view" className="text-gray-800">
                 {/* HEADER */}
                 <header id="header" className="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-40">
                     <div className="container mx-auto px-4">
@@ -467,7 +466,6 @@ const HomePage = () => {
                     </div>
                 </footer>
             </div>
-        </body>
     );
 };
 

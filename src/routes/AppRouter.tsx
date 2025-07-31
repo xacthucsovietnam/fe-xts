@@ -30,7 +30,9 @@ import ProtectedRoute from './ProtectedRoute';
 
 // // Production Entity
 import ProductionEntityDashboardPage from '../features/production-entity/pages/DashboardPage';
-// import BatchManagementPage from '../features/production-entity/pages/BatchManagementPage';
+import CurrentServicesPage from '../features/production-entity/pages/CurrentServicesPage';
+import SystemServicesPage from '../features/production-entity/pages/SystemServicesPage';
+
 
 // // Certification Management
 // import CertificateManagementPage from '../features/certification-management/pages/CertificateManagementPage';
@@ -108,8 +110,10 @@ const AppRouter: React.FC = () => {
           }
         >
           <Route index element={<ProductionEntityDashboardPage />} />
-          <Route path="product-entry" element={<ProductionEntityDashboardPage />} />
-          {/* <Route path="batch-management" element={<BatchManagementPage />} /> */}
+          <Route path="dashboard" element={<ProductionEntityDashboardPage />} />
+          <Route path="current-services" element={<CurrentServicesPage />} />
+          <Route path="system-services" element={<SystemServicesPage />} />
+
         </Route>
 
         {/* Chủ thể quản lý sản phẩm chứng chỉ chứng nhận */}
