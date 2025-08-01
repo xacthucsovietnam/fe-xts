@@ -65,7 +65,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
 
   // Xử lý đặc biệt cho trang chọn vai trò
   // Nếu người dùng đã đăng nhập, cho phép truy cập trang chọn vai trò bất kể vai trò hiện tại là gì.
-  if (location.pathname === '/select-role') {
+  if (location.pathname === '/personal-space') {
     return <>{children || <Outlet />}</>;
   }
 
@@ -74,7 +74,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, allowedRoles 
     // Nếu người dùng chưa có vai trò cụ thể ('none')
     // và đang cố gắng truy cập một trang yêu cầu vai trò cụ thể (không phải trang chọn vai trò)
     if (userRole === null || userRole === 'none') {
-      return <Navigate to="/select-role" replace />;
+      return <Navigate to="/personal-space" replace />;
     }
 
     // Nếu người dùng có vai trò nhưng vai trò đó không nằm trong danh sách được phép

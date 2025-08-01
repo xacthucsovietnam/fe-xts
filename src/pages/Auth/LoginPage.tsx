@@ -46,7 +46,7 @@ const LoginPage: React.FC = () => {
       localStorage.setItem('isAuthenticated', 'true');
       localStorage.setItem('userRole', 'none'); // Set a default role to indicate logged in but not selected
       setLoading(false); // Stop loading
-      navigate('/select-role');
+      navigate('/personal-space');
     }, 1500); // Simulate network delay
   };
 
