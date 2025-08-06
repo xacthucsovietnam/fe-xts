@@ -3,14 +3,14 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   User, Mail, Phone, Briefcase, // Basic Info
-  Globe, Users, MessageSquare, Lock, // Login Methods
+  Users, Lock, // Login Methods
   Building, Factory, UserCheck, // Entities: Building for Organization, Factory for Production, UserCheck for Individual
   MailCheck, Calendar, // Invitations
   Edit, Eye, EyeOff, // Password visibility, Edit, View Profile
-  CheckCircle, XCircle, PlusCircle, // Status and action icons
+  CheckCircle, XCircle, // Status and action icons
   ArrowRight, // Navigate icon
   Info, // General info icon
-  ChevronRight, // For navigation in modals
+  // For navigation in modals
   LinkIcon
 } from 'lucide-react';
 

@@ -1,17 +1,17 @@
 // src/routes/AppRouter.tsx
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Import các trang chính
 import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/Auth/LoginPage';
 import RegisterPage from '../pages/Auth/RegisterPage';
 import ForgotPasswordPage from '../pages/Auth/ForgotPasswordPage';
-// import RoleSelectionPage from '../pages/RoleSelectionPage'; // No longer needed as PersonalSpacePage replaces it
+import RoleSelectionPage from '../pages/RoleSelectionPage'; // No longer needed as PersonalSpacePage replaces it
 import PersonalSpacePage from '../pages/PersonalSpacePage'; // Updated path for PersonalSpacePage
 
-import Profile from '../features/user/Profile'; // Import Profile page
-import EditProfile from '../features/user/EditProfile'; // Import EditProfile page
+// import Profile from '../features/user/Profile'; // Import Profile page
+// import EditProfile from '../features/user/EditProfile'; // Import EditProfile page
 
 
 // Import các layout
@@ -76,6 +76,7 @@ const AppRouter: React.FC = () => {
 
         {/* Tuyến đường Không gian cá nhân (không còn bảo vệ bởi ProtectedRoute) */}
         <Route path="/personal-space" element={<PersonalSpacePage />} />
+        <Route path="/select-role" element={<RoleSelectionPage />} />
 
         {/* User Profile Routes */}
         <Route path="/user">

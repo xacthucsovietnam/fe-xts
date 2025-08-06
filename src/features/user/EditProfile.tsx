@@ -1,14 +1,13 @@
 // src/features/user/EditProfile.tsx
 import React, { useState, useEffect } from 'react';
 import {
-  User, Mail, Phone, Calendar, IdCard, MapPin, Building, // Basic info icons
   Save, XCircle, // Save, Cancel icons
   UploadCloud, // Avatar upload icon
 } from 'lucide-react';
 
 // Import UserProfileData and AddressData interfaces
 // Import UserProfileData and AddressData interfaces
-import type { UserProfileData, AddressData } from '../../types/user'; // Path from src/features/user to src/types
+import type { UserProfileData } from '../../types/user'; // Path from src/features/user to src/types
  // Path from src/features/user to src/types
 
 // Constants for fallback image URLs

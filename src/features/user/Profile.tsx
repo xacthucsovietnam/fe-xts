@@ -3,7 +3,7 @@ import React from 'react';
 import {
   User, Mail, Phone, Calendar, IdCard, MapPin, Building, // Basic info icons
   Edit, // Edit button icon
-  XCircle // Close button icon for modal
+ // Close button icon for modal
 } from 'lucide-react';
 
 // Import UserProfileData interface
@@ -38,7 +38,7 @@ interface ProfileProps {
  * It includes personal details, contact information, identification, and full address.
  * A button is provided to trigger the profile editing modal.
  */
-const Profile: React.FC<ProfileProps> = ({ userProfile, onClose, onEditRequest }) => {
+const Profile: React.FC<ProfileProps> = ({ userProfile, onEditRequest }) => {
 
   return (
     <div className="p-4 sm:p-6"> {/* Adjusted padding for modal content */}

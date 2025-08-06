@@ -5,23 +5,16 @@ import {
   MessageSquare,
   Bell,
   Settings,
-  Globe,
-  User,
   LogOut,
   ChevronDown,
-  ChevronRight,
   Activity,
-  HardDrive,
-  Package,
   Tag,
-  Users,
   LayoutDashboard,
   ClipboardList,
   CreditCard,
   BookText,
   Building,
   PlusCircle,
-  Briefcase,
   RefreshCcw, // Icon for Change Entity
   Palette, // Icon for Theme settings
   Menu, // Hamburger icon
@@ -42,7 +35,7 @@ import {
 const ProductionEntityLayout: React.FC = () => {
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
+  // const [activeSubMenu, setActiveSubMenu] = useState<string | null>(null);
   const [activeHeaderMenu, setActiveHeaderMenu] = useState<string>('Tổng quan'); // State for active header menu
 
   // States for dropdowns/popups
@@ -166,9 +159,9 @@ const ProductionEntityLayout: React.FC = () => {
     navigate('/login');
   };
 
-  const toggleSubMenu = (menuName: string) => {
-    setActiveSubMenu(activeSubMenu === menuName ? null : menuName);
-  };
+  // const toggleSubMenu = (menuName: string) => {
+  //   setActiveSubMenu(activeSubMenu === menuName ? null : menuName);
+  // };
 
   const handleSelectLanguage = (lang: typeof languages[0]) => {
     setSelectedLanguage(lang);
