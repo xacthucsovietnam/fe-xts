@@ -105,6 +105,7 @@ const ProductionEntityLayout: React.FC = () => {
       icon: <ClipboardList size={20} />,
       subMenus: [
         { name: 'Sản phẩm', path: '/production-entity/products' },
+        { name: 'Kích hoạt tự động', path: '/production-entity/auto-activate' },
         { name: 'Mẫu tem', path: '/production-entity/label-templates' },
         { name: 'In tem', path: '/production-entity/print-labels' },
         { name: 'Kích hoạt', path: '/production-entity/activate' },

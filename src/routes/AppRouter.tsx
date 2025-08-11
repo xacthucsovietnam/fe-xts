@@ -10,6 +10,7 @@ import ForgotPasswordPage from '../pages/Auth/ForgotPasswordPage';
 import RoleSelectionPage from '../pages/RoleSelectionPage'; // No longer needed as PersonalSpacePage replaces it
 import PersonalSpacePage from '../pages/PersonalSpacePage'; // Updated path for PersonalSpacePage
 
+
 // import Profile from '../features/user/Profile'; // Import Profile page
 // import EditProfile from '../features/user/EditProfile'; // Import EditProfile page
 
@@ -34,6 +35,15 @@ import ProductionEntityLayout from '../layouts/ProductionEntityLayout';
 import ProductionEntityDashboardPage from '../features/production-entity/pages/DashboardPage'; // Updated path
 import CurrentServicesPage from '../features/production-entity/pages/CurrentServicesPage'; // Updated path
 import SystemServicesPage from '../features/production-entity/pages/SystemServicesPage'; // Updated path
+import SalePointsPage from '../features/production-entity/pages/SalePoints';
+import Seasons from '../features/production-entity/pages/Logs';
+import PaymentPage from '../features/production-entity/pages/PaymentPage.tsx';
+import PaymentDetailPage from '../features/production-entity/pages/PaymentDetailPage'; // Thêm import này
+import NewPaymentPage from '../features/production-entity/pages/NewPaymentPage'; // Thêm import này
+import ProductsPage from '../features/production-entity/pages/ProductsPage'; // Thêm import này
+import NewProductPage from '../features/production-entity/pages/NewProductPage'; // Thêm import này
+import AutoActivatePage from '../features/production-entity/pages/AutoActivatePage'; // Thêm import này
+import NewAutoActivatePage from '../features/production-entity/pages/NewAutoActivatePage'; // Thêm import này
 
 
 // Certification Management
@@ -88,6 +98,17 @@ const AppRouter: React.FC = () => {
           <Route path="dashboard" element={<ProductionEntityDashboardPage />} />
           <Route path="current-services" element={<CurrentServicesPage />} />
           <Route path="system-services" element={<SystemServicesPage />} />
+          <Route path="sales-points" element={<SalePointsPage />} />
+          <Route path="logs" element={<Seasons />} />
+          <Route path="payment" element={<PaymentPage />} />
+          <Route path="payment/new" element={<NewPaymentPage />} />
+          <Route path="payment/:id" element={<PaymentDetailPage />} />
+          <Route path="products" element={<ProductsPage />} />
+          <Route path="products/new" element={<NewProductPage />} />
+          <Route path="auto-activate" element={<AutoActivatePage />} />
+          <Route path="auto-activate/new" element={<NewAutoActivatePage />} />
+
+          
           {/* Thêm các tuyến đường con khác của chủ thể sản xuất tại đây */}
         </Route>
 
