@@ -7,6 +7,7 @@ import HomePage from '../pages/HomePage';
 import LoginPage from '../pages/Auth/LoginPage';
 import RegisterPage from '../pages/Auth/RegisterPage';
 import ForgotPasswordPage from '../pages/Auth/ForgotPasswordPage';
+import ResetPasswordPage from '../pages/Auth/ResetPasswordPage';
 import RoleSelectionPage from '../pages/RoleSelectionPage'; // No longer needed as PersonalSpacePage replaces it
 import PersonalSpacePage from '../pages/PersonalSpacePage'; // Updated path for PersonalSpacePage
 
@@ -36,7 +37,7 @@ import ProductionEntityDashboardPage from '../features/production-entity/pages/D
 import CurrentServicesPage from '../features/production-entity/pages/CurrentServicesPage'; // Updated path
 import SystemServicesPage from '../features/production-entity/pages/SystemServicesPage'; // Updated path
 import SalePointsPage from '../features/production-entity/pages/SalePoints';
-import Seasons from '../features/production-entity/pages/Logs';
+import LogsPage from '../features/production-entity/pages/LogsPage.tsx';
 import PaymentPage from '../features/production-entity/pages/PaymentPage.tsx';
 import PaymentDetailPage from '../features/production-entity/pages/PaymentDetailPage'; // Thêm import này
 import NewPaymentPage from '../features/production-entity/pages/NewPaymentPage'; // Thêm import này
@@ -44,6 +45,8 @@ import ProductsPage from '../features/production-entity/pages/ProductsPage'; // 
 import NewProductPage from '../features/production-entity/pages/NewProductPage'; // Thêm import này
 import AutoActivatePage from '../features/production-entity/pages/AutoActivatePage'; // Thêm import này
 import NewAutoActivatePage from '../features/production-entity/pages/NewAutoActivatePage'; // Thêm import này
+import NewLogPage from '../features/production-entity/pages/NewLogPage.tsx';
+import LogDetailPage from '../features/production-entity/pages/LogDetailPage.tsx';
 
 
 // Certification Management
@@ -82,6 +85,7 @@ const AppRouter: React.FC = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/reset-password" element={<ResetPasswordPage />} />
         </Route>
 
         {/* Tuyến đường Không gian cá nhân (không còn bảo vệ bởi ProtectedRoute) */}
@@ -99,7 +103,9 @@ const AppRouter: React.FC = () => {
           <Route path="current-services" element={<CurrentServicesPage />} />
           <Route path="system-services" element={<SystemServicesPage />} />
           <Route path="sales-points" element={<SalePointsPage />} />
-          <Route path="logs" element={<Seasons />} />
+          <Route path="logs" element={<LogsPage />} />
+          <Route path="logs/new" element={<NewLogPage />} />
+          <Route path="logs/:id/view" element={<LogDetailPage />} />
           <Route path="payment" element={<PaymentPage />} />
           <Route path="payment/new" element={<NewPaymentPage />} />
           <Route path="payment/:id" element={<PaymentDetailPage />} />
