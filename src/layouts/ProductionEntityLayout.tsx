@@ -646,7 +646,7 @@ const ProductionEntityLayout: React.FC = () => {
 
         {/* Main Content */}
         {/* Added overflow-x-hidden to prevent horizontal scrollbar from content */}
-        <main className="flex-1 p-6 overflow-y-auto overflow-x-hidden">
+        <main className="flex-1 overflow-y-auto overflow-x-hidden">
           <Outlet /> {/* Renders the content of the nested routes */}
         </main>
       </div>

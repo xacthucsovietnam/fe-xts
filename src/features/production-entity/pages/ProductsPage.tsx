@@ -57,28 +57,30 @@ const ProductsPage: React.FC = () => {
   };
 
   const handleStatusChange = (productId: string) => {
-    // Logic để thay đổi trạng thái sản phẩm
     console.log(`Thay đổi trạng thái của sản phẩm: ${productId}`);
-    // Cần cập nhật lại mockProducts hoặc gọi API
+    // Logic cập nhật trạng thái sản phẩm
   };
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold text-gray-800 flex items-center">
+      {/* Top section with heading and add new button, responsive for mobile */}
+      <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-6">
+        {/* The heading is hidden on mobile and visible on desktop */}
+        <h1 className="hidden lg:flex text-2xl font-bold text-gray-800 items-center">
           <ClipboardList size={28} className="mr-2 text-blue-600" />
           Danh sách sản phẩm
         </h1>
+        {/* The button is full width and has increased height on mobile */}
         <Link
-          to="/production-entity/products/new" // Example new product route
-          className="flex items-center px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition duration-200 ease-in-out"
+          to="/production-entity/products/new"
+          className="flex items-center justify-center w-full lg:w-auto px-4 py-3 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition duration-200 ease-in-out lg:mt-0"
         >
           <PlusCircle size={20} className="mr-2" />
           Thêm mới
         </Link>
       </div>
 
-      {/* Bộ lọc tìm kiếm */}
+      {/* Search filter */}
       <div className="mb-6">
         <div className="relative">
           <input
@@ -91,9 +93,9 @@ const ProductsPage: React.FC = () => {
           <Search size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
         </div>
       </div>
-
-      {/* Danh sách sản phẩm */}
-      <div className="overflow-x-auto">
+      
+      {/* Table for desktop screens */}
+      <div className="hidden lg:block overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-200 rounded-lg">
           <thead className="bg-gray-50">
             <tr>
@@ -158,7 +160,29 @@ const ProductsPage: React.FC = () => {
         </table>
       </div>
 
-      {/* Phân trang */}
+      {/* Cards for mobile and tablet screens */}
+      <div className="lg:hidden">
+        {currentProducts.length > 0 ? (
+          <div className="grid grid-cols-1 gap-4">
+            {currentProducts.map((product) => (
+              <Link key={product.id} to={`/production-entity/products/${product.id}`} className="block p-4 border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-lg font-bold text-gray-900">{product.name}</p>
+                    <p className="text-md text-gray-800">{product.code}</p>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        ) : (
+          <div className="p-4 text-center text-gray-500 border border-gray-200 rounded-lg">
+            Không tìm thấy sản phẩm nào.
+          </div>
+        )}
+      </div>
+
+      {/* Pagination */}
       <div className="flex items-center justify-between mt-6">
         <div className="text-sm text-gray-600">
           Hiển thị {(currentPage - 1) * itemsPerPage + 1} đến {Math.min(currentPage * itemsPerPage, filteredProducts.length)} trên tổng số {filteredProducts.length} mục

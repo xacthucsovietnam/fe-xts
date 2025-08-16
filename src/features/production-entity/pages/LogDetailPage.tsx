@@ -99,7 +99,31 @@ const mockActivities: Activity[] = [
     supply: 'Phân NPK Đầu Trâu',
     quantity: 15,
   },
+  {
+    id: 'a3',
+    icon: '🧺',
+    name: 'Thu hoạch sản phẩm',
+    time: '12/08/2025 09:00',
+    timestamp: 1723438800000,
+    description: null,
+    hours: 3,
+    yield: 150,
+    supply: null,
+    quantity: null,
+  },
 ];
+
+// Hàm helper để lấy tên nhóm công việc từ tên công việc
+// Đã di chuyển hàm này ra ngoài component để tránh lỗi "before initialization"
+const getGroupNameByTask = (taskName: string): string => {
+  for (const group in workProcess) {
+    if (workProcess[group].tasks.includes(taskName)) {
+      return group;
+    }
+  }
+  return 'Công việc khác';
+};
+
 
 // --- (Modal Components) ---
 
@@ -402,7 +426,7 @@ const WorkLogFormModal: React.FC<WorkLogFormModalProps> = ({
 
 const LogDetailPage: React.FC = () => {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<'logbook' | 'report'>('logbook');
+  const [activeTab, setActiveTab] = useState<'logbook' | 'report' | 'harvest'>('logbook');
   const [showModal, setShowModal] = useState(false);
   const [modalStep, setModalStep] = useState<'group' | 'task' | 'form'>('group');
   const [selectedGroup, setSelectedGroup] = useState('');
@@ -410,6 +434,11 @@ const LogDetailPage: React.FC = () => {
   const [activities, setActivities] = useState<Activity[]>(mockActivities);
   const [isEditing, setIsEditing] = useState(false);
   const [initialData, setInitialData] = useState<Activity | null>(null);
+
+  // Lọc danh sách thu hoạch từ các hoạt động
+  const harvests = activities.filter(
+    (activity) => getGroupNameByTask(activity.name) === 'Giai đoạn Thu hoạch',
+  );
 
   const logbook = mockLogbook;
 
@@ -438,14 +467,6 @@ const LogDetailPage: React.FC = () => {
     setModalStep('form');
   };
 
-  const getGroupNameByTask = (taskName: string): string => {
-    for (const group in workProcess) {
-      if (workProcess[group].tasks.includes(taskName)) {
-        return group;
-      }
-    }
-    return 'Công việc khác';
-  };
 
   const handleSaveLog = (formData: FormData) => {
     const newActivity: Activity = {
@@ -527,6 +548,16 @@ const LogDetailPage: React.FC = () => {
           </button>
           <button
             className={`flex-1 cursor-pointer text-center py-2 text-sm font-medium rounded-md transition-colors ${
+              activeTab === 'harvest'
+                ? 'bg-blue-600 text-white'
+                : 'text-gray-600'
+            }`}
+            onClick={() => setActiveTab('harvest')}
+          >
+            Thu hoạch
+          </button>
+          <button
+            className={`flex-1 cursor-pointer text-center py-2 text-sm font-medium rounded-md transition-colors ${
               activeTab === 'report'
                 ? 'bg-blue-600 text-white'
                 : 'text-gray-600'
@@ -588,6 +619,54 @@ const LogDetailPage: React.FC = () => {
               ) : (
                 <p className="mt-2 text-gray-500 text-center">
                   Chưa có hoạt động nào được ghi nhận.
+                </p>
+              )}
+            </div>
+          </div>
+        )}
+
+        {/* Thu hoạch Tab */}
+        {activeTab === 'harvest' && (
+          <div>
+            <div className="bg-white p-4 rounded-xl shadow-md">
+              <h2 className="text-lg font-semibold text-gray-800 mb-4">
+                Các lần thu hoạch
+              </h2>
+              {harvests.length > 0 ? (
+                <div className="mt-3 space-y-2">
+                  {harvests.map((activity) => (
+                    <div
+                      key={activity.id}
+                      className="bg-gray-50 p-4 rounded-lg shadow-sm flex items-center justify-between"
+                    >
+                      <div className="flex items-center">
+                        <span className="mr-3 text-2xl">{activity.icon}</span>
+                        <div className="flex flex-col">
+                          <span className="text-gray-800 font-medium">
+                            {activity.name}
+                          </span>
+                          <span className="text-gray-500 text-sm mt-1">
+                            {activity.time}
+                          </span>
+                          {activity.yield && (
+                            <span className="text-green-600 font-bold mt-1">
+                              Sản lượng: {activity.yield} kg
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        className="text-gray-400 hover:text-blue-500 cursor-pointer"
+                        onClick={() => handleEditLog(activity.id)}
+                      >
+                        <Pencil size={20} />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="mt-2 text-gray-500 text-center">
+                  Chưa có lần thu hoạch nào được ghi nhận.
                 </p>
               )}
             </div>

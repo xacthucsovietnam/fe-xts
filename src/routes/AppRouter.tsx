@@ -42,7 +42,9 @@ import PaymentPage from '../features/production-entity/pages/PaymentPage.tsx';
 import PaymentDetailPage from '../features/production-entity/pages/PaymentDetailPage'; // Thêm import này
 import NewPaymentPage from '../features/production-entity/pages/NewPaymentPage'; // Thêm import này
 import ProductsPage from '../features/production-entity/pages/ProductsPage'; // Thêm import này
+import DetailProductPage from '../features/production-entity/pages/DetailProductPage'; // Thêm import này
 import NewProductPage from '../features/production-entity/pages/NewProductPage'; // Thêm import này
+import UpdateProductPage from '../features/production-entity/pages/UpdateProductPage'; // Thêm import này
 import AutoActivatePage from '../features/production-entity/pages/AutoActivatePage'; // Thêm import này
 import NewAutoActivatePage from '../features/production-entity/pages/NewAutoActivatePage'; // Thêm import này
 import NewLogPage from '../features/production-entity/pages/NewLogPage.tsx';
@@ -109,6 +111,8 @@ const AppRouter: React.FC = () => {
           <Route path="payment" element={<PaymentPage />} />
           <Route path="payment/new" element={<NewPaymentPage />} />
           <Route path="payment/:id" element={<PaymentDetailPage />} />
+          <Route path="products/:id" element={<DetailProductPage />} />
+          <Route path="products/:id/edit" element={<UpdateProductPage />} />
           <Route path="products" element={<ProductsPage />} />
           <Route path="products/new" element={<NewProductPage />} />
           <Route path="auto-activate" element={<AutoActivatePage />} />

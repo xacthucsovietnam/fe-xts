@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
+  ChevronLeft,
+  DollarSign,
   PlusCircle,
   X,
-  ChevronLeft,
   CheckCircle,
   Upload,
-  DollarSign,
   Trash2,
 } from 'lucide-react';
 
@@ -27,27 +27,30 @@ interface ProductAttribute {
   required: boolean;
 }
 
-const NewProductPage: React.FC = () => {
+// Interface for the entire product data
+interface ProductData {
+  productName: string;
+  price: number;
+  expiryValue: string;
+  expiryUnit: string;
+  gtin: string;
+  profileImages: { src: string; alt: string }[];
+  description: string;
+  attributes: ProductAttribute[];
+  productDescription: string;
+  introImages: { src: string; alt: string }[];
+  introVideoSrc: string | null;
+}
+
+const UpdateProductPage: React.FC = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState('profile');
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
 
-  // Form states for "HỒ SƠ" tab
-  const [productName, setProductName] = useState('');
-  const [price, setPrice] = useState('');
-  const [expiryValue, setExpiryValue] = useState('');
-  const [expiryUnit, setExpiryUnit] = useState('Ngày');
-  const [gtin, setGtin] = useState('');
-  const [profileImages, setProfileImages] = useState<File[]>([]);
-  const [description, setDescription] = useState('');
-  const [attributes, setAttributes] = useState<ProductAttribute[]>([]);
-
-  // Form states for "GIỚI THIỆU" tab
-  const [productDescription, setProductDescription] = useState('');
-  const [introImages, setIntroImages] = useState<File[]>([]);
-  const [introVideo, setIntroVideo] = useState<File | null>(null);
+  const [productData, setProductData] = useState<ProductData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -64,16 +67,55 @@ const NewProductPage: React.FC = () => {
     };
   }, [modalRef]);
 
+  // Simulate fetching product data
+  useEffect(() => {
+    const fetchProductData = () => {
+      setIsLoading(true);
+      // Mock data for a single product to be updated
+      const mockProduct: ProductData = {
+        productName: 'Bột giặt OMO Matic Tinh Dầu Thơm',
+        price: 150000,
+        expiryValue: '2',
+        expiryUnit: 'Năm',
+        gtin: '8934567890123',
+        profileImages: [
+          { src: 'https://placehold.co/100x100/E5E7EB/1F2937?text=Omo+1', alt: 'Omo product image 1' },
+          { src: 'https://placehold.co/100x100/E5E7EB/1F2937?text=Omo+2', alt: 'Omo product image 2' },
+          { src: 'https://placehold.co/100x100/E5E7EB/1F2937?text=Omo+3', alt: 'Omo product image 3' },
+        ],
+        description: 'Bột giặt OMO Matic với công thức đột phá giúp đánh bay vết bẩn cứng đầu chỉ trong một lần giặt, đồng thời lưu lại hương thơm dịu nhẹ từ tinh dầu thiên nhiên.',
+        attributes: [
+          { id: 1, name: 'Khối lượng', unit: 'kg', value: '3', type: AttributeType.BASIC, required: true },
+          { id: 2, name: 'Loại', unit: '', value: 'Máy giặt cửa trên', type: AttributeType.BASIC, required: true },
+          { id: 3, name: 'Số lượng', unit: 'chai', value: '1', type: AttributeType.BUSINESS, required: false },
+        ],
+        productDescription: 'OMO Matic Bột Giặt Cửa Trên Tinh Dầu Thơm với công thức đột phá, ứng dụng công nghệ giặt sạch vượt trội giúp đánh bay những vết bẩn cứng đầu một cách hiệu quả chỉ trong một lần giặt. Sản phẩm còn có thành phần tinh dầu thơm tự nhiên, giúp quần áo luôn mềm mại và thơm mát. Thích hợp cho cả giặt tay và giặt máy.',
+        introImages: [
+          { src: 'https://placehold.co/200x150/E5E7EB/1F2937?text=Intro+1', alt: 'Introduction image 1' },
+          { src: 'https://placehold.co/200x150/E5E7EB/1F2937?text=Intro+2', alt: 'Introduction image 2' },
+        ],
+        introVideoSrc: 'https://www.w3schools.com/html/mov_bbb.mp4',
+      };
+      
+      setTimeout(() => {
+        setProductData(mockProduct);
+        setIsLoading(false);
+      }, 1000); // Simulate network delay
+    };
+
+    fetchProductData();
+  }, []);
+
   // Handle "Quay lại" button click
   const handleGoBack = () => {
-    // navigate to the previous screen, likely the product list
-    navigate('/production-entity/products');
+    navigate(-1);
   };
 
   // Handle form submission
   const handleConfirm = () => {
-    // Validate required fields only in "HỒ SƠ" tab
-    if (!productName || profileImages.length === 0) {
+    if (!productData) return;
+    // Validate required fields
+    if (!productData.productName || productData.profileImages.length === 0) {
       setToastMessage('Vui lòng điền đầy đủ các trường bắt buộc (*) ở tab HỒ SƠ.');
       setShowToast(true);
       return;
@@ -84,33 +126,28 @@ const NewProductPage: React.FC = () => {
 
   // Final submission after modal confirmation
   const handleFinalSubmit = () => {
-    // Logic to save the new product data
-    console.log('Product Data:', {
-      productName,
-      price,
-      expiry: `${expiryValue} ${expiryUnit}`,
-      gtin,
-      profileImages,
-      description,
-      productDescription,
-      introImages,
-      introVideo
-    });
+    // Logic to save the updated product data
+    console.log('Updated Product Data:', productData);
 
     // Close modal and show success toast
     setShowConfirmModal(false);
-    setToastMessage('Thêm mới sản phẩm thành công!');
+    setToastMessage('Cập nhật sản phẩm thành công!');
     setShowToast(true);
 
-    // Redirect to product list page after a delay
+    // Redirect after a delay
     setTimeout(() => {
       navigate('/production-entity/products');
     }, 2000);
   };
 
-  // Handle file uploads with size validation
+  // Handle updates to form fields
+  const handleUpdateField = (field: keyof ProductData, value: any) => {
+    setProductData(prev => prev ? { ...prev, [field]: value } : null);
+  };
+
+  // Handle file uploads (note: this is a simplified version for mock data)
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>, fileType: 'profileImage' | 'introImage' | 'introVideo') => {
-    if (!e.target.files) return;
+    if (!e.target.files || !productData) return;
 
     const files = Array.from(e.target.files);
     const maxSizeMB = fileType === 'introVideo' ? 200 : 20;
@@ -125,57 +162,80 @@ const NewProductPage: React.FC = () => {
     });
 
     if (fileType === 'profileImage') {
-      setProfileImages(prev => [...prev, ...validFiles]);
+      const newImages = validFiles.map(file => ({ src: URL.createObjectURL(file), alt: file.name }));
+      setProductData(prev => prev ? { ...prev, profileImages: [...prev.profileImages, ...newImages] } : null);
     } else if (fileType === 'introImage') {
-      setIntroImages(prev => [...prev, ...validFiles]);
+      const newImages = validFiles.map(file => ({ src: URL.createObjectURL(file), alt: file.name }));
+      setProductData(prev => prev ? { ...prev, introImages: [...prev.introImages, ...newImages] } : null);
     } else if (fileType === 'introVideo') {
-      // Only allow one video file
-      setIntroVideo(validFiles[0]);
+      setProductData(prev => prev ? { ...prev, introVideoSrc: URL.createObjectURL(validFiles[0]) } : null);
     }
   };
 
-  const removeFile = (fileToRemove: File, fileType: 'profileImage' | 'introImage' | 'introVideo') => {
+  const removeFile = (fileSrc: string, fileType: 'profileImage' | 'introImage' | 'introVideo') => {
+    if (!productData) return;
     if (fileType === 'profileImage') {
-      setProfileImages(prev => prev.filter(file => file !== fileToRemove));
+      setProductData(prev => prev ? { ...prev, profileImages: prev.profileImages.filter(file => file.src !== fileSrc) } : null);
     } else if (fileType === 'introImage') {
-      setIntroImages(prev => prev.filter(file => file !== fileToRemove));
+      setProductData(prev => prev ? { ...prev, introImages: prev.introImages.filter(file => file.src !== fileSrc) } : null);
     } else if (fileType === 'introVideo') {
-      setIntroVideo(null);
+      setProductData(prev => prev ? { ...prev, introVideoSrc: null } : null);
     }
   };
 
   // Handle adding a new attribute row
   const addAttribute = () => {
+    if (!productData) return;
     const newAttribute: ProductAttribute = {
-      id: attributes.length + 1,
+      id: productData.attributes.length + 1,
       name: '',
       unit: '',
       value: '',
       type: AttributeType.BASIC,
       required: true,
     };
-    setAttributes([...attributes, newAttribute]);
+    setProductData(prev => prev ? { ...prev, attributes: [...prev.attributes, newAttribute] } : null);
   };
 
   // Handle updating an attribute field
   const updateAttribute = (id: number, field: keyof ProductAttribute, value: any) => {
-    setAttributes(attributes.map(attr => {
-      if (attr.id === id) {
-        const newAttr = { ...attr, [field]: value };
-        // Logic for required checkbox based on attribute type
-        if (field === 'type') {
-          newAttr.required = value === AttributeType.BASIC;
+    if (!productData) return;
+    setProductData(prev => prev ? {
+      ...prev,
+      attributes: prev.attributes.map(attr => {
+        if (attr.id === id) {
+          const newAttr = { ...attr, [field]: value };
+          if (field === 'type') {
+            newAttr.required = value === AttributeType.BASIC;
+          }
+          return newAttr;
         }
-        return newAttr;
-      }
-      return attr;
-    }));
+        return attr;
+      })
+    } : null);
   };
 
   // Handle removing an attribute row
   const removeAttribute = (id: number) => {
-    setAttributes(attributes.filter(attr => attr.id !== id));
+    if (!productData) return;
+    setProductData(prev => prev ? { ...prev, attributes: prev.attributes.filter(attr => attr.id !== id) } : null);
   };
+  
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-gray-500 text-lg">Đang tải dữ liệu sản phẩm...</div>
+      </div>
+    );
+  }
+
+  if (!productData) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-red-500 text-lg">Không tìm thấy sản phẩm.</div>
+      </div>
+    );
+  }
 
   const renderProfileTab = () => (
     <div className="space-y-6 pb-24">
@@ -184,8 +244,8 @@ const NewProductPage: React.FC = () => {
         <label className="block text-sm font-medium text-gray-700">Tên sản phẩm <span className="text-red-500">*</span></label>
         <input
           type="text"
-          value={productName}
-          onChange={(e) => setProductName(e.target.value)}
+          value={productData.productName}
+          onChange={(e) => handleUpdateField('productName', e.target.value)}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
           placeholder="Nhập tên sản phẩm"
         />
@@ -201,8 +261,8 @@ const NewProductPage: React.FC = () => {
             </div>
             <input
               type="number"
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
+              value={productData.price}
+              onChange={(e) => handleUpdateField('price', parseInt(e.target.value))}
               className="block w-full pl-10 pr-12 rounded-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
               placeholder="0.00"
             />
@@ -216,14 +276,14 @@ const NewProductPage: React.FC = () => {
           <div className="mt-1 flex rounded-md shadow-sm">
             <input
               type="number"
-              value={expiryValue}
-              onChange={(e) => setExpiryValue(e.target.value)}
+              value={productData.expiryValue}
+              onChange={(e) => handleUpdateField('expiryValue', e.target.value)}
               className="block w-full flex-1 rounded-l-md border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
               placeholder="Nhập số"
             />
             <select
-              value={expiryUnit}
-              onChange={(e) => setExpiryUnit(e.target.value)}
+              value={productData.expiryUnit}
+              onChange={(e) => handleUpdateField('expiryUnit', e.target.value)}
               className="rounded-r-md cursor-pointer border-l-0 border-gray-300 focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border bg-gray-50"
             >
               <option>Giờ</option>
@@ -241,11 +301,11 @@ const NewProductPage: React.FC = () => {
         <label className="block text-sm font-medium text-gray-700">Mã GTIN</label>
         <input
           type="text"
-          value={gtin}
+          value={productData.gtin}
           onChange={(e) => {
             const value = e.target.value.replace(/[^0-9]/g, '');
             if (value.length <= 14) {
-              setGtin(value);
+              handleUpdateField('gtin', value);
             }
           }}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
@@ -277,11 +337,11 @@ const NewProductPage: React.FC = () => {
           </label>
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
-          {profileImages.map((file, index) => (
+          {productData.profileImages.map((image, index) => (
             <div key={index} className="relative group">
-              <img src={URL.createObjectURL(file)} alt={`profile-${index}`} className="w-24 h-24 object-cover rounded-md" />
+              <img src={image.src} alt={image.alt} className="w-24 h-24 object-cover rounded-md" />
               <button
-                onClick={() => removeFile(file, 'profileImage')}
+                onClick={() => removeFile(image.src, 'profileImage')}
                 className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <X size={12} />
@@ -295,8 +355,8 @@ const NewProductPage: React.FC = () => {
       <div>
         <label className="block text-sm font-medium text-gray-700">Mô tả</label>
         <textarea
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          value={productData.description}
+          onChange={(e) => handleUpdateField('description', e.target.value)}
           rows={4}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
           placeholder="Nhập mô tả sản phẩm"
@@ -332,7 +392,7 @@ const NewProductPage: React.FC = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {attributes.map((attr, index) => (
+              {productData.attributes.map((attr, index) => (
                 <tr key={attr.id}>
                   <td className="px-4 py-2 text-sm text-gray-500">{index + 1}</td>
                   <td className="px-4 py-2">
@@ -392,7 +452,7 @@ const NewProductPage: React.FC = () => {
         
         {/* Card view for mobile/tablet screens */}
         <div className="block sm:hidden space-y-4">
-          {attributes.map((attr, index) => (
+          {productData.attributes.map((attr, index) => (
             <div key={attr.id} className="bg-white rounded-lg shadow-md p-4 border border-gray-200">
               <div className="flex justify-between items-center pb-2 border-b border-gray-200">
                 <span className="text-sm font-semibold text-blue-600">Thuộc tính #{index + 1}</span>
@@ -469,12 +529,12 @@ const NewProductPage: React.FC = () => {
 
   const renderIntroductionTab = () => (
     <div className="space-y-6 pb-24">
-      {/* Mô tả sản phẩm (Simple Textarea) */}
+      {/* Mô tả sản phẩm */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-2">Mô tả sản phẩm</label>
         <textarea
-          value={productDescription}
-          onChange={(e) => setProductDescription(e.target.value)}
+          value={productData.productDescription}
+          onChange={(e) => handleUpdateField('productDescription', e.target.value)}
           rows={10}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm p-2 border"
           placeholder="Nhập mô tả chi tiết sản phẩm"
@@ -503,11 +563,11 @@ const NewProductPage: React.FC = () => {
           </label>
         </div>
         <div className="mt-3 flex flex-wrap gap-2">
-          {introImages.map((file, index) => (
+          {productData.introImages.map((image, index) => (
             <div key={index} className="relative group">
-              <img src={URL.createObjectURL(file)} alt={`intro-${index}`} className="w-24 h-24 object-cover rounded-md" />
+              <img src={image.src} alt={image.alt} className="w-24 h-24 object-cover rounded-md" />
               <button
-                onClick={() => removeFile(file, 'introImage')}
+                onClick={() => removeFile(image.src, 'introImage')}
                 className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <X size={12} />
@@ -537,11 +597,11 @@ const NewProductPage: React.FC = () => {
             />
           </label>
         </div>
-        {introVideo && (
+        {productData.introVideoSrc && (
           <div className="mt-3 relative group">
-            <video controls src={URL.createObjectURL(introVideo)} className="w-48 h-auto rounded-md"></video>
+            <video controls src={productData.introVideoSrc} className="w-48 h-auto rounded-md"></video>
             <button
-              onClick={() => removeFile(introVideo, 'introVideo')}
+              onClick={() => removeFile(productData.introVideoSrc!, 'introVideo')}
               className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
             >
               <X size={12} />
@@ -556,7 +616,7 @@ const NewProductPage: React.FC = () => {
     <div className="p-4 sm:p-6 bg-gray-50 min-h-screen flex flex-col">
       <div className="flex-grow bg-white rounded-xl shadow-md p-6 sm:p-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold text-gray-800">Thêm mới sản phẩm</h1>
+          <h1 className="text-2xl font-bold text-gray-800">Cập nhật sản phẩm</h1>
         </div>
 
         {/* Tabs */}
@@ -585,7 +645,6 @@ const NewProductPage: React.FC = () => {
 
         {/* Tab Content */}
         {activeTab === 'profile' ? renderProfileTab() : renderIntroductionTab()}
-
       </div>
 
       {/* Fixed Footer Buttons */}
@@ -613,13 +672,13 @@ const NewProductPage: React.FC = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-600 bg-opacity-75 transition-opacity">
           <div ref={modalRef} className="bg-white rounded-lg shadow-xl max-w-sm w-full p-6 transform transition-all">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900">Xác nhận thêm mới</h3>
+              <h3 className="text-lg font-medium text-gray-900">Xác nhận cập nhật</h3>
               <button onClick={() => setShowConfirmModal(false)} className="text-gray-400 hover:text-gray-600">
                 <X size={20} />
               </button>
             </div>
             <div className="mt-4 text-sm text-gray-500">
-              Bạn có chắc chắn muốn thêm mới sản phẩm này không?
+              Bạn có chắc chắn muốn cập nhật sản phẩm này không?
             </div>
             <div className="mt-6 flex justify-end space-x-3">
               <button
@@ -657,4 +716,4 @@ const NewProductPage: React.FC = () => {
   );
 };
 
-export default NewProductPage;
+export default UpdateProductPage;
